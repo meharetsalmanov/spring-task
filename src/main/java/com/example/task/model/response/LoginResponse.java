@@ -10,13 +10,13 @@ public class LoginResponse {
     private String accessToken;
 
     private String refreshToken;
-    private UserDetails userDetails;
-
+    private UserInfoDetails user;
 
     @Data
     @Builder
-    public static class UserDetails{
-        private String email;
+    public static class UserInfoDetails{
         private Long id;
+        private String email;
+        private String username;
     }
 }

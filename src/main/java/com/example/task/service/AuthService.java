@@ -1,15 +1,12 @@
 package com.example.task.service;
 
-import com.example.task.entity.User;
-import com.example.task.util.JwtUtil;
+import com.example.task.model.dto.CustomUserDetails;
+import com.example.task.service.security.AccessTokenManager;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -19,28 +16,31 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AuthService {
 
-    private final JwtUtil jwtUtil;
+    private final AccessTokenManager accessTokenManager;
 
-    public Optional<Authentication> getAuthentication(HttpServletRequest httpServletRequest) throws ServletException {
+    public Optional<Authentication> getAuthentication(HttpServletRequest httpServletRequest)  {
         String authHeader = httpServletRequest.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")){
             return Optional.empty();
         }
 
         final String token = authHeader.substring(7);
-        final Claims claims = jwtUtil.parseToken(token);
+        final Claims claims = accessTokenManager.read(token);
         if (claims.getExpiration().before(new Date())) {
             return Optional.empty();
         }
         return Optional.of(getAuthentication(claims));
 
     }
+
+
     private Authentication getAuthentication(Claims claims) {
-        UserDetails user = User.builder()
-                .id(Long.valueOf(claims.get("id").toString()))
-                .email(claims.get("email").toString())
-                .build();
-        return new UsernamePasswordAuthenticationToken(user, "", null);
+        return new UsernamePasswordAuthenticationToken(
+                CustomUserDetails.builder()
+                        .id(claims.get("id", Long.class))
+                        .email(claims.get("email", String.class))
+                        .username(claims.get("username", String.class))
+                        .build(), "", null);
     }
 
 }

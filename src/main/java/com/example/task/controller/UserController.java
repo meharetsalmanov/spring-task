@@ -1,7 +1,10 @@
 package com.example.task.controller;
 
+import com.example.task.model.request.ChangePasswordRequest;
+import com.example.task.model.request.ForgotPasswordRequest;
 import com.example.task.model.request.LoginRequest;
 import com.example.task.model.request.RegisterRequest;
+import com.example.task.model.response.base.BaseResponse;
 import com.example.task.model.response.LoginResponse;
 import com.example.task.service.UserService;
 import jakarta.validation.Valid;
@@ -29,7 +32,20 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public LoginResponse login(@Valid @RequestBody LoginRequest loginRequest){
-        return userService.login(loginRequest);
+    public BaseResponse<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest){
+        return BaseResponse.success(userService.login(loginRequest));
     }
+
+    @PostMapping("/forgot-password")
+    public void forgotPassword(@Valid @RequestBody ForgotPasswordRequest request){
+        userService.forgotPassword(request.getUsername());
+    }
+
+    @PostMapping("/change-password")
+    public BaseResponse<Object> changePassword(@Valid @RequestBody ChangePasswordRequest request){
+        userService.changePassword(request);
+        return BaseResponse.success();
+    }
+
+
 }

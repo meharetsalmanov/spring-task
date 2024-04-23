@@ -14,4 +14,7 @@ public class SecurityJwtData {
 
     @Value("${refresh-token-validity-time}")
     private Integer refreshTokenValidityTime;
+
+    @Value("${change-password-validity-time}")
+    private Integer changePasswordValidityTime;
 }
