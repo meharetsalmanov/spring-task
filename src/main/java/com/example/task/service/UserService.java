@@ -2,6 +2,7 @@ package com.example.task.service;
 
 import com.example.task.entity.User;
 import com.example.task.exception.BaseException;
+import com.example.task.mapper.UserMapper;
 import com.example.task.model.request.ChangePasswordRequest;
 import com.example.task.model.request.LoginRequest;
 import com.example.task.model.request.RegisterRequest;
@@ -10,24 +11,17 @@ import com.example.task.repository.UserRepository;
 import com.example.task.service.security.AccessTokenManager;
 import com.example.task.service.security.ChangePasswordManager;
 import com.example.task.service.security.RefreshTokenManager;
-import com.example.task.util.JwtUtil;
 import com.example.task.util.MailContentBuilder;
 import com.example.task.util.MailSenderUtil;
 import jakarta.mail.MessagingException;
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
-import org.springframework.mail.MailSendException;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Optional;
-import java.util.UUID;
 
 import static com.example.task.model.enums.response.ErrorResponseMessages.*;
 
@@ -43,29 +37,18 @@ public class UserService {
     private final AccessTokenManager accessTokenManager;
     private final RefreshTokenManager refreshTokenManager;
     private final ChangePasswordManager changePasswordManager;
+    private final UserMapper userMapper;
 
 
-    public void register(RegisterRequest request){
+    public void register(RegisterRequest request) throws MessagingException {
 
         Optional<User> user = userRepository.findByEmailOrUsername(request.getEmail(),request.getUsername());
 
         if (user.isPresent())
             throw BaseException.of(ALREADY_REGISTERED);
 
-        User userEntity = User.builder()
-                .email(request.getEmail())
-                .username(request.getUsername())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .isEnabled(false)
-                .confirmationCode(UUID.randomUUID().toString())
-                .build();
-
-        try{
-            mailSenderUtil.sendMail(mailContentBuilder.confirmationMailDto(userEntity));
-        } catch (MessagingException e) {
-            throw new MailSendException("Error in sending mail");
-        }
-
+        User userEntity = userMapper.registerRequestToUser(request);
+        mailSenderUtil.sendMail(mailContentBuilder.confirmationMailDto(userEntity));
         userRepository.save(userEntity);
     }
 
@@ -86,19 +69,15 @@ public class UserService {
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword()));
 
-        return LoginResponse.builder()
-                .accessToken(accessTokenManager.generate(user))
-                .refreshToken(refreshTokenManager.generate(user))
-                .user(LoginResponse.UserInfoDetails.builder()
-                        .id(user.getId())
-                        .email(user.getEmail())
-                        .username(user.getUsername())
-                        .build())
-                .build();
+        return userMapper.toLoginResponse(
+                accessTokenManager.generate(user),
+                refreshTokenManager.generate(user),
+                user
+        );
     }
 
 
-    public void forgotPassword(String username){
+    public void forgotPassword(String username) throws MessagingException {
         User user = userRepository.findByEmailOrUsername(username, username).orElseThrow(
                 () -> BaseException.of(USER_NOT_FOUND)
         );
@@ -106,13 +85,7 @@ public class UserService {
         if(!user.getIsEnabled()) throw BaseException.of(USER_NOT_CONFIRMED);
 
         String token = changePasswordManager.getToken(user);
-
-        try{
-            mailSenderUtil.sendMail(mailContentBuilder.forgotPasswordMailDto(user,token));
-        } catch (MessagingException e) {
-            throw new MailSendException("Error in sending mail");
-        }
-
+        mailSenderUtil.sendMail(mailContentBuilder.forgotPasswordMailDto(user,token));
     }
 
     public void changePassword(ChangePasswordRequest request)

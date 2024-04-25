@@ -7,6 +7,7 @@ import com.example.task.model.request.RegisterRequest;
 import com.example.task.model.response.base.BaseResponse;
 import com.example.task.model.response.LoginResponse;
 import com.example.task.service.UserService;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,8 +22,7 @@ public class UserController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public void register(@Valid @RequestBody RegisterRequest request)
-    {
+    public void register(@Valid @RequestBody RegisterRequest request) throws MessagingException {
         userService.register(request);
     }
 
@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @PostMapping("/forgot-password")
-    public void forgotPassword(@Valid @RequestBody ForgotPasswordRequest request){
+    public void forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) throws MessagingException {
         userService.forgotPassword(request.getUsername());
     }
 
