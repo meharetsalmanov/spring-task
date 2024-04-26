@@ -1,0 +1,358 @@
+{
+	"info": {
+		"_postman_id": "02e1c2c0-2c69-4269-9c1f-1ae57f5c79bb",
+		"name": "task",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13279066"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"meharet\",\r\n    \"email\":\"salmanov.meharet@gmail.com\",\r\n    \"password\":\"meharet123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"meharet\",\r\n    \"password\":\"meharet123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "forgot-password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"meharet\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user/forgot-password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"forgot-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "change-password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"password\":\"meharet123\",\r\n    \"code\":\"eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MTQwNjU5NTIsImV4cCI6MTcxNDA2NjI1MiwidXNlcm5hbWUiOiJtZWhhcmV0IiwiZW1haWwiOiJzYWxtYW5vdi5tZWhhcmV0QGdtYWlsLmNvbSJ9._tAEEkr4tyiBZ58dxw8TQGotWkh5T-ToBXvLeCmRhQg\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user/change-password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"change-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "confirm",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"meharet\",\r\n    \"password\":\"meharet123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user/confirm?code=123",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"confirm"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "123"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "all tasks",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNzEzODk3NDk5LCJleHAiOjE3MTM5ODM4OTksInVzZXJuYW1lIjoibWVoYXJldCIsImVtYWlsIjoic2FsbWFub3YubWVoYXJldEBnbWFpbC5jb20iLCJpZCI6Nn0.ir3lQ4ajEQpyKqB-Ng4paEeKa-l6onv0sK6_lb05ny0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/tasks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create task",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNzEzODk3NDk5LCJleHAiOjE3MTM5ODM4OTksInVzZXJuYW1lIjoibWVoYXJldCIsImVtYWlsIjoic2FsbWFub3YubWVoYXJldEBnbWFpbC5jb20iLCJpZCI6Nn0.ir3lQ4ajEQpyKqB-Ng4paEeKa-l6onv0sK6_lb05ny0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"test\",\r\n    \"priority\":\"1\",\r\n    \"description\":\"desc\",\r\n    \"deadline\":\"30-01-1995 12:25:12\",\r\n    \"categoryId\":2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tasks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update task",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNzEzODk3NDk5LCJleHAiOjE3MTM5ODM4OTksInVzZXJuYW1lIjoibWVoYXJldCIsImVtYWlsIjoic2FsbWFub3YubWVoYXJldEBnbWFpbC5jb20iLCJpZCI6Nn0.ir3lQ4ajEQpyKqB-Ng4paEeKa-l6onv0sK6_lb05ny0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"test0\",\r\n    \"priority\":\"0\",\r\n    \"description\":\"desc1\",\r\n    \"deadline\":\"31-01-1995 12:25:12\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tasks/19",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tasks",
+						"19"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "completetask",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNzEzODk3NDk5LCJleHAiOjE3MTM5ODM4OTksInVzZXJuYW1lIjoibWVoYXJldCIsImVtYWlsIjoic2FsbWFub3YubWVoYXJldEBnbWFpbC5jb20iLCJpZCI6Nn0.ir3lQ4ajEQpyKqB-Ng4paEeKa-l6onv0sK6_lb05ny0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tasks/19",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tasks",
+						"19"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete task",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNzEzODk3NDk5LCJleHAiOjE3MTM5ODM4OTksInVzZXJuYW1lIjoibWVoYXJldCIsImVtYWlsIjoic2FsbWFub3YubWVoYXJldEBnbWFpbC5jb20iLCJpZCI6Nn0.ir3lQ4ajEQpyKqB-Ng4paEeKa-l6onv0sK6_lb05ny0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tasks/19",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tasks",
+						"19"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
